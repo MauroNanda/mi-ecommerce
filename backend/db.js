@@ -1,13 +1,20 @@
-// db.js
-
 const mysql = require('mysql2');
 
-// Creamos un "pool" de conexiones
-const pool = mysql.createPool({
-  host: 'localhost',       // Dónde está MySQL (localhost si está en tu compu)
-  user: 'root',            // Tu usuario de MySQL
-  password: '',            // Tu contraseña de MySQL (puede ser vacía)
-  database: 'mi_ecommerce' // Nombre de la base de datos que vas a usar
+// Configuración de la conexión a la base de datos
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'D_1cc7e8bx', // Si tienes una contraseña para root, ponela aquí
+  database: 'mi_ecommerce'
 });
 
-module.exports = pool;
+// Verificar que la conexión fue exitosa
+connection.connect(err => {
+  if (err) {
+    console.error('Error de conexión: ' + err.stack);
+    return;
+  }
+  console.log('Conexión exitosa a la base de datos');
+});
+
+module.exports = connection;

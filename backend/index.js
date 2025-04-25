@@ -1,24 +1,19 @@
 const express = require('express');
-const dotenv = require('dotenv');
-
-// Cargar las variables de entorno desde el archivo .env
-dotenv.config();
-
-// Crear una instancia de la aplicación Express
 const app = express();
+const port = 3000;
+const connection = require('./db'); // Importamos la conexión a la base de datos
 
-// Middleware para manejar las peticiones JSON
-app.use(express.json());
-
-// Ruta de prueba
-app.get('/', (req, res) => {
-  res.send('¡Servidor de e-commerce funcionando!');
+// Ruta para obtener todos los productos
+app.get('/productos', (req, res) => {
+  connection.query('SELECT * FROM productos', (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error en la base de datos');
+      return;
+    }
+    res.json(results); // Respondemos con los productos
+  });
 });
-
-// Puerto donde el servidor escuchará
-const PORT = process.env.PORT || 5000;
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
